@@ -11,21 +11,15 @@ class JedisFactory extends BasePoolableObjectFactory {
     private final int timeout;
     private final String password;
     private final int database;
-    private final String clientName;
 
     public JedisFactory(final String host, final int port,
-                final int timeout, final String password, final int database) {
-        this(host, port, timeout, password, database, null);
-    }
-    public JedisFactory(final String host, final int port,
-            final int timeout, final String password, final int database, final String clientName) {
+            final int timeout, final String password, final int database) {
         super();
         this.host = host;
         this.port = port;
         this.timeout = timeout;
         this.password = password;
         this.database = database;
-        this.clientName = clientName;
     }
 
     public Object makeObject() throws Exception {
@@ -38,13 +32,10 @@ class JedisFactory extends BasePoolableObjectFactory {
         if( database != 0 ) {
             jedis.select(database);
         }
-        if ( clientName != null ) {
-            jedis.clientSetname(clientName);
-        }
-
+        
         return jedis;
     }
-
+    
     @Override
     public void activateObject(Object obj) throws Exception {
 		if (obj instanceof Jedis) {
